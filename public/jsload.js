@@ -18,7 +18,7 @@
      * The root directory relative to the file paths listed in the manifest.
      * @type {string}
      */
-    var BUILD_PATH = '/public/build/';
+    var BUILD_PATH = 'public/build/';
     /**
      * The path to the file manifest that contains a list of the versioned
      * javascript and stylesheet file paths.
@@ -37,6 +37,9 @@
         loadJSON: function (path, success) {
             var _this = this;
             var xhr = new XMLHttpRequest();
+
+            //hide body until styles are loaded
+            document.body.style.display = 'none';
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
@@ -76,18 +79,23 @@
          * @param {string} file The javascript or stylesheet file URL to load into the DOM
          */
         loadFile: function (file) {
-            var head, extension, element;
+            var head, body, extension, element;
 
-            head = document.getElementsByTagName('head')[0];
+            head = document.head;
+            body = document.body;
             extension = file.split('.').pop();
 
             if (extension == 'js') {
-                element = this.createJavascriptElement(file);
+                if (element = this.createJavascriptElement(file)) {
+                    body.appendChild(element);
+                }
             } else if (extension == 'css') {
-                element = this.createStylesheetLink(file);
+                if (element = this.createStylesheetLink(file)) {
+                    head.appendChild(element);
+                    //show body once styles are loaded
+                    document.body.style.display = 'block';
+                }
             }
-
-            if (element) head.appendChild(element);
         },
         /**
          * Generates a javascript script element
