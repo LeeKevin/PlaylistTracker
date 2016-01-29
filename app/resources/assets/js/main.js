@@ -21,5 +21,11 @@
 
     $(document).ready(function () {
         mainPage.init();
+        socket.on('connect', function () {
+
+            socket.on('updateTracks', function (tracks) {
+                console.log('Got them! ' + Object.keys(tracks).length + ' tracks.');
+            });
+        });
     });
-});
+})();

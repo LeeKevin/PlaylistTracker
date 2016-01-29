@@ -11,6 +11,6 @@
     "gulp": "^3.9.0",
     "jquery": "^2.2.0",
     "laravel-elixir": "^4.2.0",
-    "socket.io-client": "^1.4.5"
+    "socket.io-client": "~0.9.16"
   }
 }
