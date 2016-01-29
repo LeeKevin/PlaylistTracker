@@ -6,6 +6,7 @@
   "main": "server.js",
   "dependencies": {
     "socket.io": "~0.9.16",
-    "redis": "~0.10.1"
+    "redis": "~0.10.1",
+    "synchronize": "~0.9.14"
   }
 }

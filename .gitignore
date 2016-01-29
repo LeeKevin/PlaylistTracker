@@ -5,3 +5,5 @@ public/js/
 public/css/
 public/images/
 dump.rdb
+
+server/config/config.json
