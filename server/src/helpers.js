@@ -5,7 +5,7 @@
     var querystring = require('querystring');
     var url = require('url');
 
-    global.helpers = {
+    var helpers = {
         /**
          * Synchronous http request for a JSON resource.
          *
@@ -13,7 +13,7 @@
          * @param {string} urlString        The URL to which to send the request
          * @param {Object} headers          Associative array/object containing header information
          * @param {Object|function} data    Any data to be passed with the request
-         * @param {function} callback       Callback function that returns the json Object or false
+         * @param {function} [callback]     Callback function that returns the json Object or false
          *
          * @returns {boolean|Object} Returns an object containing the parsed JSON, false otherwise
          */
@@ -99,5 +99,13 @@
             return Object.prototype.toString.call(arr) === '[object Array]';
         }
     };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        module.exports = helpers;
+    } else if (typeof global === 'object') {
+        global.helpers = helpers;
+    } else if (typeof window === 'object') {
+        window.helpers = helpers;
+    }
 
 })();

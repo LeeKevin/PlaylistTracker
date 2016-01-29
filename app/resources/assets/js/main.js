@@ -1,10 +1,16 @@
-$(function () {
+(function () {
     'use strict';
 
-    var backgroundPage = chrome.extension.getBackgroundPage();
-    var app = backgroundPage.app;
+    var config = require('config.json');
+    var
+        $ = require('jquery'),
+        io = require('socket.io-client')
+        ;
 
-    var mainPage = {
+    var socket = io.connect('http://' + config['server']['url'] + ':' + config['server']['port']);
+    var mainPage;
+
+    mainPage = {
         init: function () {
             this.bindListeners();
         },
@@ -15,9 +21,5 @@ $(function () {
 
     $(document).ready(function () {
         mainPage.init();
-        app.readTracks(app.getTracksItemKey(), function (tracks) {
-            console.log(tracks);
-        });
     });
-
 });

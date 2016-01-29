@@ -18,7 +18,7 @@
      * The root directory relative to the file paths listed in the manifest.
      * @type {string}
      */
-    var BUILD_PATH = 'public/build/';
+    var BUILD_PATH = 'build/';
     /**
      * The path to the file manifest that contains a list of the versioned
      * javascript and stylesheet file paths.

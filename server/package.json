@@ -5,8 +5,9 @@
   "author": "Kevin Lee",
   "main": "server.js",
   "dependencies": {
-    "socket.io": "~0.9.16",
+    "cron": "^1.1.0",
     "redis": "~0.10.1",
+    "socket.io": "~0.9.16",
     "synchronize": "~0.9.14"
   }
 }
