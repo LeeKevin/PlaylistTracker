@@ -6,7 +6,6 @@
   "dependencies": {
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
-    "express": "~4.13.4",
     "font-awesome": "^4.5.0",
     "gulp": "^3.9.0",
     "gulp-concat-filenames": "^1.1.1",

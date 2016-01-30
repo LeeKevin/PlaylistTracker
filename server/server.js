@@ -130,8 +130,12 @@
             spotify.fetchPlaylistInfo(config['target']['user'], config['target']['playlist'], token, function (err, playlist) {
                 socket.emit('playlist', playlist);
             });
+        });
 
-            sendTracks(token);
+        socket.on('requestTracks', function () {
+            spotify.fetchToken(function (token) {
+                sendTracks(token);
+            });
         });
     });
 
