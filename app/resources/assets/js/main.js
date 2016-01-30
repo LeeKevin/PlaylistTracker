@@ -1,31 +1,62 @@
 (function () {
     'use strict';
 
-    var config = require('config.json');
     var
+        config = require('config.json'),
         $ = require('jquery'),
-        io = require('socket.io-client')
+        io = require('socket.io-client'),
+        partials = require('../partials/partials.json')
         ;
 
-    var socket = io.connect('http://' + config['server']['url'] + ':' + config['server']['port']);
     var mainPage;
+    //TODO uncomment
+    //var socket = io.connect('http://' + config['server']['url'] + ':' + config['server']['port']);
+    //
+    //socket.on('connect', function () {
+    //    socket.on('playlist', function (playlist) {
+    //        mainPage.init(playlist);
+    //    });
+    //    socket.on('updateTracks', function (tracks) {
+    //        console.log('Got them! ' + Object.keys(tracks).length + ' tracks.');
+    //    });
+    //});
 
     mainPage = {
-        init: function () {
+        init: function (playlist) {
+            this.preparePage(playlist);
             this.bindListeners();
+        },
+        preparePage: function (playlist) {
+
         },
         bindListeners: function () {
 
         }
     };
 
-    $(document).ready(function () {
-        mainPage.init();
-        socket.on('connect', function () {
-
-            socket.on('updateTracks', function (tracks) {
-                console.log('Got them! ' + Object.keys(tracks).length + ' tracks.');
-            });
-        });
+    //TODO remove (currently using for quick testing)
+    mainPage.init({
+        "description" : "Your weekly mixtape of fresh music. Enjoy new discoveries and deep cuts chosen just for you. Updated every Monday, so save your favourites!",
+        "external_urls" : {
+            "spotify" : "http://open.spotify.com/user/spotifydiscover/playlist/6yvCTzloWw32VYEuNjeuRU"
+        },
+        "id" : "6yvCTzloWw32VYEuNjeuRU",
+        "images" : [ {
+            "height" : null,
+            "url" : "https://u.scdn.co/images/pl/default/985687624ed4de4d19cc495cebfd625280d19b10",
+            "width" : null
+        } ],
+        "name" : "Discover Weekly",
+        "owner" : {
+            "external_urls" : {
+                "spotify" : "http://open.spotify.com/user/spotifydiscover"
+            },
+            "href" : "https://api.spotify.com/v1/users/spotifydiscover",
+            "id" : "spotifydiscover",
+            "type" : "user",
+            "uri" : "spotify:user:spotifydiscover"
+        },
+        "uri" : "spotify:user:spotifydiscover:playlist:6yvCTzloWw32VYEuNjeuRU"
     });
+
 })();

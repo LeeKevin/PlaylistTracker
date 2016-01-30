@@ -69,6 +69,19 @@
 
                 callback(tracks);
             });
+        },
+        fetchPlaylistInfo: function (user, playlist, token, callback) {
+            if (!(user && playlist && typeof token == 'object')) return false;
+
+            var fields = [
+                'id', 'name', 'description', 'owner', 'external_urls', 'uri', 'images'
+            ];
+            var playlistPath = 'https://api.spotify.com/v1/users/' + user + '/playlists/' + playlist + '?fields=' + fields.join();
+            var test = 'test';
+            helpers.loadJSON("GET", playlistPath, {
+                'Accept': 'application/json',
+                'Authorization': token['token_type'] + ' ' + token['access_token']
+            }, callback);
         }
     };
 
@@ -91,6 +104,17 @@
         }
     };
 
+    function sendTracks(token) {
+        spotify.fetchPlaylistTracks(config['target']['user'], config['target']['playlist'], token, function (tracks) {
+            storage.addTracks(tracks);
+
+            //send tracks to client
+            storage.getTracks(function (err, res) {
+                io.sockets.emit('updateTracks', res);
+            });
+        });
+    }
+
     //Init server and data store:
     db = redis.createClient();
 
@@ -100,24 +124,22 @@
 
     io.sockets.on('connection', function (socket) {
         socket.ipAddress = socket.handshake.address.address;
+
+        //prepare playlist data
+        spotify.fetchToken(function (token) {
+            spotify.fetchPlaylistInfo(config['target']['user'], config['target']['playlist'], token, function (err, playlist) {
+                socket.emit('playlist', playlist);
+            });
+
+            sendTracks(token);
+        });
     });
 
-    function execute() {
-        spotify.fetchToken(function (token) {
-            spotify.fetchPlaylistTracks(config['target']['user'], config['target']['playlist'], token, function (tracks) {
-                storage.addTracks(tracks);
-
-                //send tracks to client
-                storage.getTracks(function (err, res) {
-                    io.sockets.emit('updateTracks', res);
-                });
-            });
-        });
-    }
-
-    //Run once now:
-    execute();
     //Load new tracks every Monday at 3:00 AM (this executes at local time, so you may want to adjust).
-    new cron('0 0 3 * * 1', execute, null, true);
+    new cron('0 0 3 * * 1', function () {
+        spotify.fetchToken(function (token) {
+            sendTracks(token);
+        });
+    }, null, true);
 
 })();
