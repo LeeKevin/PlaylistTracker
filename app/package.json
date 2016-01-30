@@ -9,9 +9,11 @@
     "express": "~4.13.4",
     "font-awesome": "^4.5.0",
     "gulp": "^3.9.0",
+    "gulp-concat-filenames": "^1.1.1",
+    "gulp-html-to-json": "~0.1.5",
     "jquery": "^2.2.0",
     "laravel-elixir": "^4.2.0",
-    "socket.io-client": "~0.9.16",
-    "gulp-html-to-json": "~0.1.5"
+    "mustache": "^2.2.1",
+    "socket.io-client": "~0.9.16"
   }
 }
