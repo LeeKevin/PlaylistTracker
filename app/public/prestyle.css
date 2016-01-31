@@ -1,0 +1,83 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    position: relative;
+    min-height: 100%;
+    background: rgba(63,165,79,1) fixed;
+    background: -moz-linear-gradient(top, rgba(63,165,79,1) 0%, rgba(63,123,128,1) 52%, rgba(57,33,83,1) 100%) fixed;
+    background: -webkit-linear-gradient(top, rgba(63,165,79,1) 0%, rgba(63,123,128,1) 52%, rgba(57,33,83,1) 100%) fixed;
+    background: -o-linear-gradient(top, rgba(63,165,79,1) 0%, rgba(63,123,128,1) 52%, rgba(57,33,83,1) 100%) fixed;
+    background: -ms-linear-gradient(top, rgba(63,165,79,1) 0%, rgba(63,123,128,1) 52%, rgba(57,33,83,1) 100%) fixed;
+    background: linear-gradient(to bottom, rgba(63,165,79,1) 0%, rgba(63,123,128,1) 52%, rgba(57,33,83,1) 100%) fixed;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3fa54f', endColorstr='#392153', GradientType=0 );
+}
+
+body > section.main {
+    padding: 20px 0;
+    background: url("images/ribbon.svg") no-repeat 15% 30% fixed;
+    background-size: 130%;
+    min-height: 100%;
+    width: 100%;
+    z-index: -1;
+}
+
+.logo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    text-align: center;
+    font-family: "Lato", Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #eee;
+    text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.75);
+    transition: all ease .5s;
+    font-size: .5em;
+    white-space: nowrap;
+    font-weight: 100 !important;
+}
+
+.logo h1 {
+    display: inline-block;
+    vertical-align: top;
+    line-height: 50px;
+    padding: 0;
+    margin: 0;
+}
+
+.logo .spotify-image  {
+    height: 50px;
+    transition: all ease .5s;
+}
+
+body.loading .logo {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-75%);
+    font-size: 1em;
+    white-space: pre;
+}
+
+body.loading .logo .spotify-image {
+    height: 150px;
+    animation: bobbing ease-in-out 1.2s infinite;
+}
+
+@keyframes bobbing {
+    50% {
+        transform: translate(0, 8px) translateZ(0);
+    }
+}
+@-webkit-keyframes bobbing {
+    50% {
+        -webkit-transform: translate3d(0, 8px, 0);
+    }
+}
+@-moz-keyframes bobbing {
+    50% {
+        -moz-transform: translate3d(0, 8px, 0);
+    }
+}

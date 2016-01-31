@@ -14,8 +14,10 @@
 
     socket.on('connect', function () {
         socket.on('playlist', function (playlist) {
-            mainPage.init(playlist);
-            socket.emit('requestTracks');
+            mainPage.init(playlist, function () {
+                //request tracks once page is initialized.
+                socket.emit('requestTracks');
+            });
         });
         socket.on('updateTracks', function (tracks) {
             mainPage.populateTracks(tracks);
@@ -23,21 +25,30 @@
     });
 
     mainPage = {
-        init: function (playlist) {
-            this.preparePage(playlist);
-            this.bindListeners();
-        },
-        preparePage: function (playlist) {
-            var body = $('body').removeClass('loading');
+        init: function (playlist, callback) {
+            var _this = this;
+            _this.preparePage(playlist, function () {
+                _this.bindListeners();
 
-            body.prepend(helpers.renderPartial('main', {
-                playlist_name: playlist['name'],
-                playlist_image_url: playlist["images"][0]['url']
-            }));
+                //once page is initialized, send for callback.
+                callback();
+            });
+        },
+        preparePage: function (playlist, callback) {
+            $('body').removeClass('loading');
+
+            //wait for animation to finish
+            window.setTimeout(function() {
+                $('section.main').prepend(helpers.renderPartial('main', {
+                    playlist_name: playlist['name'],
+                    playlist_image_url: playlist["images"][0]['url']
+                }));
+
+                callback();
+            }, 300);
         },
         populateTracks: function (tracks) {
             var tracksList = $('.tracks-list');
-            tracksList.find('.loading').remove();
 
             $.each(tracks, function (i, trackJSON) {
                 var track = JSON.parse(trackJSON);
