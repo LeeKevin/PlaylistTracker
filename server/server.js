@@ -100,7 +100,21 @@
             }
         },
         getTracks: function (callback) {
-            db.hgetall("tracks", callback);
+            db.hgetall("tracks", function (err, res) {
+                var tracks = [];
+                for (var trackId in res) {
+                    // skip loop if the property is from prototype
+                    if (!res.hasOwnProperty(trackId)) continue;
+
+                    try {
+                        var track = JSON.parse(res[trackId]);
+                    } catch (e) {
+                        continue;
+                    }
+                    helpers.binaryInsertionSortByDate(tracks, track, 'added_at');
+                }
+                callback(tracks);
+            });
         }
     };
 
@@ -109,7 +123,7 @@
             storage.addTracks(tracks);
 
             //send tracks to client
-            storage.getTracks(function (err, res) {
+            storage.getTracks(function (res) {
                 io.sockets.emit('updateTracks', res);
             });
         });

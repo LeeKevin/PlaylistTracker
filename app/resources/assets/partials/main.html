@@ -1,10 +1,34 @@
 <div class="container">
-    <span class="currently-label">Currently tracking:</span>
-    <div class="playlist-image">
-        <img src="{{ playlist_image_url }}"/>
-    </div>
-    <h2>{{ playlist_name }}</h2>
+    <header class="playlist-header">
+        <span class="currently-label">Currently tracking:</span>
+        <div class="playlist-img">
+            <img src="{{ playlist_image_url }}"/>
+        </div>
 
-    <div class="tracks-list">
+        <div class="playlist-details">
+            <h2>{{ playlist_name }}</h2>
+
+            <div class="playlist-description">{{ playlist_description }}</div>
+        </div>
+    </header>
+
+    <div class="tracks-list loading">
+        <table>
+            <thead>
+            <tr>
+                <th>Song</th>
+                <th>Artist</th>
+                <th>Album</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+        <div class="loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </div>
 </div>

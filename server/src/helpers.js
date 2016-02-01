@@ -97,6 +97,29 @@
         },
         isArray: function (arr) {
             return Object.prototype.toString.call(arr) === '[object Array]';
+        },
+        /**
+         * Inserts an object into a sorted array by date, ordered from newest to oldest
+         *
+         * @param arr The sorted array to insert
+         * @param obj The object containing a date string property key-value
+         * @param datePropertyName The property key name for the date string to compare
+         */
+        binaryInsertionSortByDate: function (arr, obj, datePropertyName) {
+            var start = 0, end = arr.length > 0 ? arr.length - 1 : 0, mid;
+
+            do {
+                mid = Math.floor((end + start) / 2 || 0);
+                if (mid == 0) break;
+                if (new Date(obj[datePropertyName]) > new Date(arr[mid][datePropertyName])) {
+                    end = mid - 1;
+                    continue;
+                }
+
+                start = mid + 1;
+            } while (start < end);
+
+            arr.splice(start, 0, obj);
         }
     };
 

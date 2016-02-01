@@ -38,22 +38,28 @@
             $('body').removeClass('loading');
 
             //wait for animation to finish
-            window.setTimeout(function() {
+            window.setTimeout(function () {
                 $('section.main').prepend(helpers.renderPartial('main', {
                     playlist_name: playlist['name'],
-                    playlist_image_url: playlist["images"][0]['url']
+                    playlist_image_url: playlist["images"][0]['url'],
+                    playlist_description: playlist['description']
                 }));
 
                 callback();
             }, 300);
         },
         populateTracks: function (tracks) {
-            var tracksList = $('.tracks-list');
+            var tracksList = $('.tracks-list').removeClass('loading');
 
-            $.each(tracks, function (i, trackJSON) {
-                var track = JSON.parse(trackJSON);
-                tracksList.append(helpers.renderPartial('track', {
-                    track_name: track['name']
+            $.each(tracks, function (i, track) {
+                tracksList.find('tbody').append(helpers.renderPartial('track', {
+                    track_name: track['name'],
+                    track_url: track['uri'],
+                    track_artist: track['artists'].map(function (artist) {
+                        return artist['name'];
+                    }).join(', '),
+                    track_album: track['album']['name'],
+                    track_added: helpers.timeSince(track['added_at'])
                 }));
             });
         },
@@ -63,39 +69,44 @@
     };
 
     var helpers = {
-        renderPartial: function(partial_name, params) {
+        renderPartial: function (partial_name, params) {
             if (!Partials.hasOwnProperty(partial_name)) return '';
             if (typeof params != 'object') params = {};
             var partial = Partials[partial_name];
             Mustache.parse(partial);
 
             return Mustache.render(partial, params);
+        },
+        timeSince: function (date) {
+            date = (date instanceof Date) ? date : (typeof date == 'string' ? new Date(date) : null);
+
+            if (!date) return '';
+
+            var seconds = Math.floor((new Date() - date) / 1000);
+
+            var interval = Math.floor(seconds / 31536000);
+
+            if (interval > 1) {
+                return interval + " years ago";
+            }
+            interval = Math.floor(seconds / 2592000);
+            if (interval > 1) {
+                return interval + " months ago";
+            }
+            interval = Math.floor(seconds / 86400);
+            if (interval > 1) {
+                return interval + " days ago";
+            }
+            interval = Math.floor(seconds / 3600);
+            if (interval > 1) {
+                return interval + " hours ago";
+            }
+            interval = Math.floor(seconds / 60);
+            if (interval > 1) {
+                return interval + " minutes ago";
+            }
+            return Math.floor(seconds) + " seconds ago";
         }
     };
-
-    //TODO remove (currently using for quick testing)
-    //mainPage.init({
-    //    "description": "Your weekly mixtape of fresh music. Enjoy new discoveries and deep cuts chosen just for you. Updated every Monday, so save your favourites!",
-    //    "external_urls": {
-    //        "spotify": "http://open.spotify.com/user/spotifydiscover/playlist/6yvCTzloWw32VYEuNjeuRU"
-    //    },
-    //    "id": "6yvCTzloWw32VYEuNjeuRU",
-    //    "images": [{
-    //        "height": null,
-    //        "url": "https://u.scdn.co/images/pl/default/985687624ed4de4d19cc495cebfd625280d19b10",
-    //        "width": null
-    //    }],
-    //    "name": "Discover Weekly",
-    //    "owner": {
-    //        "external_urls": {
-    //            "spotify": "http://open.spotify.com/user/spotifydiscover"
-    //        },
-    //        "href": "https://api.spotify.com/v1/users/spotifydiscover",
-    //        "id": "spotifydiscover",
-    //        "type": "user",
-    //        "uri": "spotify:user:spotifydiscover"
-    //    },
-    //    "uri": "spotify:user:spotifydiscover:playlist:6yvCTzloWw32VYEuNjeuRU"
-    //});
 
 })();

@@ -1,3 +1,12 @@
-<div class="track">
-    <span>{{ track_name }}</span>
-</div>
+<tr>
+    <td>
+        <a href="{{ track_url }}" title="{{ track_name }}">{{ track_name }}</a>
+        <a class="track-added" title="Added {{ track_added }}"></a>
+    </td>
+    <td>
+        {{ track_artist }}
+    </td>
+    <td>
+        {{ track_album }}
+    </td>
+</tr>

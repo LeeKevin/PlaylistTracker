@@ -31,6 +31,7 @@ elixir(function (mix) {
     mix.partials()
         .sass('main.scss', main_style)
         .styles([
+            './node_modules/normalize.css/normalize.css',
             main_style,
         ], style_file)
         .browserify('main.js', script_file, null, {

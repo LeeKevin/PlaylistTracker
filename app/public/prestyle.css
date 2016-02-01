@@ -6,13 +6,13 @@ body {
     height: 100%;
     position: relative;
     min-height: 100%;
-    background: rgba(63,165,79,1) fixed;
-    background: -moz-linear-gradient(top, rgba(63,165,79,1) 0%, rgba(63,123,128,1) 52%, rgba(57,33,83,1) 100%) fixed;
-    background: -webkit-linear-gradient(top, rgba(63,165,79,1) 0%, rgba(63,123,128,1) 52%, rgba(57,33,83,1) 100%) fixed;
-    background: -o-linear-gradient(top, rgba(63,165,79,1) 0%, rgba(63,123,128,1) 52%, rgba(57,33,83,1) 100%) fixed;
-    background: -ms-linear-gradient(top, rgba(63,165,79,1) 0%, rgba(63,123,128,1) 52%, rgba(57,33,83,1) 100%) fixed;
-    background: linear-gradient(to bottom, rgba(63,165,79,1) 0%, rgba(63,123,128,1) 52%, rgba(57,33,83,1) 100%) fixed;
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3fa54f', endColorstr='#392153', GradientType=0 );
+    background: rgba(63, 165, 79, 1) fixed;
+    background: -moz-linear-gradient(top, rgba(63, 165, 79, 1) 0%, rgba(63, 123, 128, 1) 52%, rgba(57, 33, 83, 1) 100%) fixed;
+    background: -webkit-linear-gradient(top, rgba(63, 165, 79, 1) 0%, rgba(63, 123, 128, 1) 52%, rgba(57, 33, 83, 1) 100%) fixed;
+    background: -o-linear-gradient(top, rgba(63, 165, 79, 1) 0%, rgba(63, 123, 128, 1) 52%, rgba(57, 33, 83, 1) 100%) fixed;
+    background: -ms-linear-gradient(top, rgba(63, 165, 79, 1) 0%, rgba(63, 123, 128, 1) 52%, rgba(57, 33, 83, 1) 100%) fixed;
+    background: linear-gradient(to bottom, rgba(63, 165, 79, 1) 0%, rgba(63, 123, 128, 1) 52%, rgba(57, 33, 83, 1) 100%) fixed;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3fa54f', endColorstr='#392153', GradientType=0);
 }
 
 body > section.main {
@@ -48,7 +48,7 @@ body > section.main {
     margin: 0;
 }
 
-.logo .spotify-image  {
+.logo .spotify-image {
     height: 50px;
     transition: all ease .5s;
 }
@@ -56,7 +56,9 @@ body > section.main {
 body.loading .logo {
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-75%);
+    -ms-transform: translate(-50%, -75%); /* IE 9 */
+    -webkit-transform: translate(-50%, -75%); /* Safari */
+    transform: translate(-50%, -75%);
     font-size: 1em;
     white-space: pre;
 }
@@ -71,11 +73,13 @@ body.loading .logo .spotify-image {
         transform: translate(0, 8px) translateZ(0);
     }
 }
+
 @-webkit-keyframes bobbing {
     50% {
         -webkit-transform: translate3d(0, 8px, 0);
     }
 }
+
 @-moz-keyframes bobbing {
     50% {
         -moz-transform: translate3d(0, 8px, 0);

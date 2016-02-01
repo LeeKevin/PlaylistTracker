@@ -14,8 +14,7 @@ body {
 .container {
   opacity: 0;
   margin: 55px auto 30px auto;
-  text-align: center;
-  border-radius: 6px;
+  border-radius: 0;
   padding: 20px;
   color: inherit;
   background-color: #30333B;
@@ -48,11 +47,12 @@ a {
 }
 
 /* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 900px) {
   /* Remove the bottom border on the jumbotron for visual effect */
   .container {
     padding: 20px 60px;
-    max-width: 730px;
+    max-width: 900px;
+    border-radius: 6px;
   }
 }
 
