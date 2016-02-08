@@ -19,8 +19,13 @@
                 socket.emit('requestTracks');
             });
         });
+
         socket.on('updateTracks', function (tracks) {
             mainPage.populateTracks(tracks);
+        });
+
+        socket.on('news', function (news) {
+            console.log(news);
         });
     });
 
@@ -36,6 +41,7 @@
         },
         preparePage: function (playlist, callback) {
             $('body').removeClass('loading');
+            if ($('#playlist-container').length) return; //already exists
 
             //wait for animation to finish
             window.setTimeout(function () {
@@ -108,5 +114,9 @@
             return Math.floor(seconds) + " seconds ago";
         }
     };
+
+    $(document).ready(function () {
+        socket.emit('requestPlaylist');
+    });
 
 })();

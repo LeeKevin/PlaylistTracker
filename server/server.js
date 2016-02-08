@@ -11,6 +11,10 @@
         io = require('socket.io').listen(config['listenPort'])
         ;
 
+    var newConnections = [];
+    var ipSpamChecker = {};
+    var socketSpamChecker = {};
+
     var spotify, storage, db;
 
     spotify = {
@@ -129,6 +133,41 @@
         });
     }
 
+    function isSpam(socket) {
+        var ipSpamCount = ipSpamChecker[socket.ipAddress];
+        var socketSpamCount = socketSpamChecker[socket.id];
+        var isSpam = false;
+        // Check for spamming from a single socket (warning at > 3 / second)
+        if (!socketSpamCount) {
+            socketSpamChecker[socket.id] = 1;
+        } else if (socketSpamCount > 3) {
+            if (socket.socketWarningFlag) {
+                socket.emit('news', 'There\'s too much traffic from your computer; refresh to reconnect!');
+                socket.disconnect();
+                isSpam = true;
+            } else {
+                socket.socketWarningFlag = 1;
+                socket.emit('news', 'It looks like you\'re sending a lot of requests... Slow down!');
+            }
+        } else ++socketSpamChecker[socket.id];
+
+        // Check for spamming from a single IP address (warning at > 400 / second)
+        if (!ipSpamCount) {
+            ipSpamChecker[socket.ipAddress] = 1;
+        } else if (++ipSpamCount > 400) {
+            if (socket.ipWarningFlag) {
+                socket.emit('news', 'There\'s too much traffic from your network; refresh to reconnect!');
+                socket.disconnect();
+                isSpam = true;
+            } else {
+                socket.ipWarningFlag = 1;
+                socket.emit('news', 'It looks like you\'re sending a lot of requests... Slow down!');
+            }
+        } else ++ipSpamChecker[socket.ipAddress];
+
+        return isSpam;
+    }
+
     //Init server and data store:
     db = redis.createClient();
 
@@ -138,15 +177,20 @@
 
     io.sockets.on('connection', function (socket) {
         socket.ipAddress = socket.handshake.address.address;
+        newConnections.push(socket);
 
-        //prepare playlist data
-        spotify.fetchToken(function (token) {
-            spotify.fetchPlaylistInfo(config['target']['user'], config['target']['playlist'], token, function (err, playlist) {
-                socket.emit('playlist', playlist);
+        socket.on('requestPlaylist', function () {
+            //prepare playlist data
+            if (isSpam(socket)) return;
+            spotify.fetchToken(function (token) {
+                spotify.fetchPlaylistInfo(config['target']['user'], config['target']['playlist'], token, function (err, playlist) {
+                    socket.emit('playlist', playlist);
+                });
             });
         });
 
         socket.on('requestTracks', function () {
+            if (isSpam(socket)) return;
             spotify.fetchToken(function (token) {
                 sendTracks(token);
             });

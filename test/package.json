@@ -1,0 +1,11 @@
+{
+  "name": "playlist-tracker-tests",
+  "version": "1.0.0",
+  "description": "Maintains a historical record of the songs added to your favorite Spotify playlists.",
+  "author": "Kevin Lee",
+  "dependencies": {
+    "should": "~8.2.1",
+    "socket.io-client": "~0.9.16",
+    "mocha": "~2.4.5"
+  }
+}
