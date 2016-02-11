@@ -106,18 +106,17 @@
          * @param datePropertyName The property key name for the date string to compare
          */
         binaryInsertionSortByDate: function (arr, obj, datePropertyName) {
-            var start = 0, end = arr.length > 0 ? arr.length - 1 : 0, mid;
+            var start = 0, end = arr.length, mid;
 
-            do {
+            while (start < end) {
                 mid = Math.floor((end + start) / 2 || 0);
-                if (mid == 0) break;
                 if (new Date(obj[datePropertyName]) > new Date(arr[mid][datePropertyName])) {
                     end = mid - 1;
                     continue;
                 }
 
                 start = mid + 1;
-            } while (start < end);
+            }
 
             arr.splice(start, 0, obj);
         }
